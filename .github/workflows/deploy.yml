@@ -52,6 +52,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -62,12 +65,15 @@ jobs:
           path: ./dist
       - name: Output contents
         run: ls
+      - name: getting permissions
+        uses: aws-actions/configure-aws-credentials 
+        with:
+          audience: sts.amazonaws.com.cn
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::291023148514:role/git-s3-access-assume-role
       - name: Deploy site
         id: deploy
         uses: ./.github/actions/deploy-s3-javascript
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}   # added secretes
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
           bucket: aws-eks-demo-bucket
           dist-folder: ./dist
