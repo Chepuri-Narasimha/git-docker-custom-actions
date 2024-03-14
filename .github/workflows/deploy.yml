@@ -71,7 +71,7 @@ jobs:
         with:
           audience: sts.amazonaws.com.cn
           aws-region: eu-west-1
-          role-to-assume: arn:aws:iam::291023148514:role/OIDC-ASSUME-ROLE
+          role-to-assume: arn:aws:iam::291023148514:role/testing-Role-XhQ4NLmoNi0T
       - name: Deploy site
         id: deploy
         uses: ./.github/actions/deploy-s3-javascript
